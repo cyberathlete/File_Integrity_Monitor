@@ -1,5 +1,6 @@
 import os
 import hashlib
+import datetime
 import time
 from colorama import init, Fore, Back
 
@@ -21,22 +22,35 @@ def AddFiles(file):
 	path,hash = hashFile(file)
 	with open('baseLine.txt', 'a') as f:
 		f.write(path + '|' + hash + '\n')
-			
+
 def Monitor():
 	while True:
-		f = open('baseLine.txt', 'r')
-		lines = f.readlines()
+		with open('baseLine.txt', 'r') as f:
+			lines = f.readlines()
 		for l in lines:
 			l = l.replace('\n','')
 			if(l == ''):
 				continue
 			path,hash = l.split('|')
 			if(not os.path.exists(path)):
-				print(f"{Fore.RED}{Back.YELLOW}File" + path + " has been deleted")
+				print(f"{Fore.RED}{Back.YELLOW}File" + path + " has been deleted at " + str(datetime.datetime.now()))
+				with open('baseLine.txt', 'w') as f:
+					for line in lines:
+						if(line.strip('\n')) != l:
+							f.write(line)
 				continue
 			p,h = hashFile(path)
 			if(h != hash):
-				print(f'{Fore.RED}{Back.YELLOW}File' + path + ' has been modified')
+				print(f'{Fore.RED}{Back.YELLOW}File' + path + ' has been modified at ' + str(datetime.datetime.now()))
+				with open('baseLine.txt', 'w') as f:
+					for line in lines:
+						if(line != '\n'):
+							if(line.strip('\n')) != l:
+								f.write(line + '\n')
+							else:
+								new_hash = line.split('|')
+								np, nh = hashFile(new_hash[0])
+								f.write(np + '|' + nh + '\n')
 		time.sleep(10)
 
 def dirChecker(file):
