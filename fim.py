@@ -54,7 +54,6 @@ def dirChecker(file):
 		if(not file[-1] == '/'):
 			file = file + '/'
 		dirList = os.listdir(file)
-		print(dirList)
 		for d in dirList:
 			if(os.path.isdir(file + d)):
 				dirChecker(file + d+'/')
