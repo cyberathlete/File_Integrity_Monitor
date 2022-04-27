@@ -93,6 +93,6 @@ def Start():
 		print("Please select a correct option")
 		input()
 		os.system("clear")
-		start()
+		Start()
 		
 Start()
