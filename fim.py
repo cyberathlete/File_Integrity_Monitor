@@ -58,7 +58,7 @@ def dirChecker(file):
 	if platform.system() == 'windows':
 		slash = '\\'
 	else:
-		slash = '/'
+		slash='/'
 	if(not os.path.exists('baseLine.txt')):
 		file = open('baseLine.txt','w')
 	if(not os.path.exists(file)):
