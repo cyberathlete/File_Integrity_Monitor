@@ -1,4 +1,5 @@
 import os
+import platform
 import hashlib
 import datetime
 import time
@@ -54,6 +55,10 @@ def Monitor():
 		time.sleep(10)
 
 def dirChecker(file):
+	if platform.system() == 'windows':
+		slash = '\\'
+	else:
+		slash = '/'
 	if(not os.path.exists('baseLine.txt')):
 		file = open('baseLine.txt','w')
 	if(not os.path.exists(file)):
@@ -65,12 +70,12 @@ def dirChecker(file):
 	if(os.path.isfile(file)):
 		AddFiles(file)
 	else:
-		if(not file[-1] == '/'):
-			file = file + '/'
+		if(not file[-1] == slash):
+			file = file + slash
 		dirList = os.listdir(file)
 		for d in dirList:
 			if(os.path.isdir(file + d)):
-				dirChecker(file + d+'/')
+				dirChecker(file + d+slash)
 			else:
 				AddFiles(file + d)
 
